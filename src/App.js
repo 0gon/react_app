@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import TOC from "./components/TOC"
 import Subject from "./components/Subject"
-import Content from "./components/Content"
+import ReadContent from "./components/ReadContent"
+import CreateContent from "./components/CreateContent"
+import Control from "./components/Control"
 
 class App extends Component{
   constructor(props){
@@ -20,10 +22,11 @@ class App extends Component{
     }
   }
   render(){
-    var _title, _desc = null;
+    var _title, _desc , _article= null;
     if(this.state.mode==='welcome'){
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      _article =  <ReadContent title={_title} desc={_desc}></ReadContent>;
     }else if(this.state.mode==='read'){
       var i = 0;
       while(i<this.state.Content.length){
@@ -31,10 +34,13 @@ class App extends Component{
         if(data.id===this.state.Selected_id){
           _title = data.title;
           _desc = data.desc;
+          _article =  <ReadContent title={_title} desc={_desc}></ReadContent>;
           break;
         }
         i++;
       }
+    }else if(this.state.mode==='create'){
+      _article =  <CreateContent title={_title} desc={_desc}></CreateContent>
     }
     return(
       <div>
@@ -53,7 +59,14 @@ class App extends Component{
             })
           }.bind(this)
         }></TOC>
-        <Content title={_title} desc={_desc}></Content>
+        <Control onChangeMode={
+          function(_mode){
+            this.setState({
+              mode: _mode,
+            })
+          }.bind(this)
+        }></Control>
+       {_article}
       </div>
     )
   }
