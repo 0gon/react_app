@@ -14,7 +14,7 @@ class App extends Component{
     this.state = {
       Subject : {title:"WEB", desc:"world wide web"},
       Selected_id : 2,
-      mode : "create",
+      mode : "welcome",
       welcome : {title : "welcome", desc:"hellow React"},
       Content : [
         {id: 1 , title: "HTML", desc: "hyper text markup language"},
@@ -94,9 +94,27 @@ class App extends Component{
         }></TOC>
         <Control onChangeMode={
           function(_mode){
-            this.setState({
-              mode: _mode,
-            })
+            if(_mode ==='delete'){
+              if(window.confirm('삭제하시겠습니까')){
+                var contents = Array.from(this.state.Content);
+                var i = 0 ;
+                while(i<contents.length){
+                  if(contents[i].id===this.state.Selected_id){
+                    contents.splice(i,1);
+                    break;
+                  }
+                  i++;
+                }
+                this.setState({
+                  Content:contents,
+                  mode:'welcome'
+                })
+              }
+            }else{
+              this.setState({
+                mode: _mode,
+              })
+            }
           }.bind(this)
         }></Control>
        {this.getArticle()}
