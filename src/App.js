@@ -9,10 +9,11 @@ import Control from "./components/Control"
 class App extends Component{
   constructor(props){
     super(props);
+    this.content_max=3;
     this.state = {
       Subject : {title:"WEB", desc:"world wide web"},
       Selected_id : 2,
-      mode : "welcome",
+      mode : "create",
       welcome : {title : "welcome", desc:"hellow React"},
       Content : [
         {id: 1 , title: "HTML", desc: "hyper text markup language"},
@@ -40,7 +41,15 @@ class App extends Component{
         i++;
       }
     }else if(this.state.mode==='create'){
-      _article =  <CreateContent title={_title} desc={_desc}></CreateContent>
+      _article =  <CreateContent onSubmit={function(_title, _desc){
+        this.content_max= this.content_max+1;
+        var _content=this.state.Content.concat(
+          {id:this.content_max, title:_title, desc:_desc}
+        );
+        this.setState({
+          Content:_content,
+        })
+      }.bind(this)}></CreateContent>
     }
     return(
       <div>
